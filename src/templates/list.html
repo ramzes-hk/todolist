@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>TO DO List</h1>
+<ol id="items">
+{% for item in items %}
+<li id="li{{loop.index}}">
+	<img src="static/trash.png" width=15px hx-delete="/note" hx-include="#item{{loop.index}}" hx-target="#li{{loop.index}}" hx-swap="outerHTML" hx-confirm="Are you sure?" />
+	<span id="span{{loop.index}}">
+	{% if item.status == 1 %}
+		<s>{{item.note}}</s>
+	{% else %}
+		{{ item.note }}
+	{% endif %}
+	</span>
+	{{item.deadline|default("", true)}} 
+	<input type="hidden" id="item{{loop.index}}" name="id" value={{item.id}} />
+	<img hx-include="#item{{loop.index}}" hx-post="/note" hx-target="#span{{loop.index}}" hx-swap="innerHTML" src="static/checkmark.png" width=15 />
+</li>
+{% endfor %}
+</ol>
+<button hx-get="/new_note" hx-swap="outerHTML">
+	New Note
+</button>
+{% endblock %}

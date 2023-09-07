@@ -1,0 +1,3 @@
+Jinja2
+Flask
+pydanctic>=2.00

@@ -1,0 +1,11 @@
+<div id="new_note_form">
+	<label for="note">
+		Note
+	</label>
+	<br />
+	<textarea id="note" name="note" value="Note" rows=4 cols=50></textarea>
+	<br /><br />
+	<button hx-post="/new_note" hx-include="#note" hx-target="previous ol" hx-swap="beforeend">Add</button>
+	
+	<button hx-get="/">Cancel</button>
+</div>
