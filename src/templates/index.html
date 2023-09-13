@@ -1,18 +1,23 @@
 <html lang="en">
-	<head>
-		<title>TO DO List</title>
-		<script src="https://unpkg.com/htmx.org@1.9.5"></script>
-		<style>
-			ol li {
-				display: flex;
-				flex-direction: row; /* Stack children vertically */
-				align-items: start;     /* Align children to the start */
-				justify-content: space-between;
-			}
-			ol { width: 300px;}
-		</style>
-	</head>
-	<body>
-		{% block content %}{% endblock %}
-	</body>
+  <head>
+    <title>TO DO List</title>
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <style>
+      ol li {
+        display: flex;
+        flex-direction: row; /* Stack children vertically */
+        align-items: start; /* Align children to the start */
+        justify-content: space-between;
+      }
+      ol {
+        width: 300px;
+      }
+      #buttons {
+        padding-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+  </body>
 </html>
