@@ -1,56 +1,30 @@
 {% extends "index.html" %} {% block content %}
 <h1>TO DO List</h1>
-<ol id="items">
-  {% for item in items %}
-  <li id="li{{loop.index}}">
-    <img
-      src="static/trash.png"
-      width="15px"
-      hx-delete="/note"
-      hx-include="#item{{loop.index}}"
-      hx-target="#li{{loop.index}}"
-      hx-swap="outerHTML"
-      hx-confirm="Are you sure?"
-    />
-    <span id="span{{loop.index}}">
-      {% if item.status == 1 %}
-      <s>{{item.note}}</s>
-      {% else %} {{ item.note }} {% endif %}
-    </span>
-    {{item.deadline|default("", true)}}
-    <input
-      type="hidden"
-      id="item{{loop.index}}"
-      name="id"
-      value="{{item.id}}"
-    />
-    <img
-      hx-include="#item{{loop.index}}"
-      hx-post="/note"
-      hx-target="#span{{loop.index}}"
-      hx-swap="innerHTML"
-      src="static/checkmark.png"
-      width="15"
-    />
-  </li>
-  {% endfor %}
+<ol id="items" class="container scrollable-ol">
+  {% for item in items %} {{item | safe}} {% endfor %}
 </ol>
-<details>
-  <summary>Details</summary>
-  <div id="new_note_form">
-    <label for="note"> Note </label>
-    <br />
-    <textarea id="note" name="note" value="Note" rows="4" cols="50"></textarea>
-    <div id="buttons">
-      <button
-        hx-post="/new_note"
-        hx-include="#note"
-        hx-target="previous ol"
-        hx-swap="beforeend"
-      >
-        Add
-      </button>
-    </div>
+<a
+  href="#"
+  role="button"
+  hx-get="/clear"
+  hx-swap="none"
+  hx-confirm="Are you sure?"
+>
+  Clear Done
+</a>
+<div id="new_note_form">
+  <label for="note"> Note </label>
+  <br />
+  <textarea id="note" name="note" value="Note" rows="1" cols="50" placeholder="Note" pattern=".+"></textarea>
+  <div id="buttons">
+    <button
+      hx-post="/new_note"
+      hx-include="#note"
+      hx-target="previous ol"
+      hx-swap="beforeend"
+    >
+      Add
+    </button>
   </div>
-</details>
+</div>
 {% endblock %}

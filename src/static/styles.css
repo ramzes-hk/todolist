@@ -1,0 +1,36 @@
+ol li {
+  display: flex;
+  flex-direction: row; /* Stack children vertically */
+  align-items: start; /* Align children to the start */
+}
+ol {
+  width: 300px;
+  padding: 1em;
+}
+span {
+  width: 50%;
+  text-align: left;
+}
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.scrollable-ol {
+  width: 50vw;
+  height: 50vh; /* Adjust this value as needed */
+  overflow-y: auto; /* or use 'scroll' if you always want the scrollbar to appear */
+  border: 1px solid #ccc;
+}
+
+.delete-button {
+  width: 1.25em;
+  height: 1.25em;
+  border: 1px solid red;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.delete-button:hover {
+  background-color: red;
+}
+

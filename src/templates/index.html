@@ -1,21 +1,16 @@
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <title>TO DO List</title>
     <script src="https://unpkg.com/htmx.org@1.9.5"></script>
-    <style>
-      ol li {
-        display: flex;
-        flex-direction: row; /* Stack children vertically */
-        align-items: start; /* Align children to the start */
-        justify-content: space-between;
-      }
-      ol {
-        width: 300px;
-      }
-      #buttons {
-        padding-top: 20px;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
+    />
+    <link 
+      rel="stylesheet" 
+      type="text/css" 
+      href="static/styles.css" 
+    />
   </head>
   <body>
     {% block content %}{% endblock %}

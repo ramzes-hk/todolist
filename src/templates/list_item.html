@@ -1,26 +1,37 @@
 <li id="li{{ index }}">
+  <input
+    class="check"
+    type="checkbox"
+    id="switch"
+    src="static/checkmark.png"
+    hx-include="#item{{ index }}"
+    hx-post="/note"
+    hx-target="#span{{ index }}"
+    hx-swap="innerHTML"
+    {% if item.status == 1 %}
+    checked
+    {% endif %}
+  />
+  <span id="span{{ index }}">
+    {% if item.status == 1 %}
+    <del>{{item.note}}</del>
+    {% else %} {{ item.note }} {% endif %}
+  </span>
+  {{item.deadline|default("", true)}}
+  <input 
+    type="hidden" 
+    id="item{{ index }}" 
+    name="id" 
+    value="{{item.id}}" 
+  />
   <img
     src="static/trash.png"
-    width="15px"
+    width="20px"
+    class="delete-button"
     hx-delete="/note"
     hx-include="#item{{ index }}"
     hx-target="#li{{ index }}"
     hx-swap="outerHTML"
     hx-confirm="Are you sure?"
-  />
-  <span id="span{{ index }}">
-    {% if item.status == 1 %}
-    <s>{{item.note}}</s>
-    {% else %} {{ item.note }} {% endif %}
-  </span>
-  {{item.deadline|default("", true)}}
-  <input type="hidden" id="item{{ index }}" name="id" value="{{item.id}}" />
-  <img
-    hx-include="#item{{ index }}"
-    hx-post="/note"
-    hx-target="#span{{ index }}"
-    hx-swap="innerHTML"
-    src="static/checkmark.png"
-    width="15"
   />
 </li>

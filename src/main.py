@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, g, request, flash
+from flask import Flask, g, redirect, request, flash
 import sqlite3
 from jinja2 import Environment, FileSystemLoader, select_autoescape, Template
 from pydantic import UUID4, BaseModel, FutureDatetime, Field
@@ -32,7 +32,6 @@ env = Environment(loader=FileSystemLoader("templates"), autoescape=select_autoes
 
 class Note(BaseModel):
     id: UUID4 = uuid.uuid4()
-    # constr(strip_whitespace=True, max_length=200)
     note: str = Field(max_length=200)
     creation_date: datetime = datetime.now()
     deadline: FutureDatetime | None = None
@@ -54,13 +53,17 @@ def index():
     items = get_all()
     global list_length
     list_length = len(items)
+    
+    item_html = [create_li(i, item) for i, item in enumerate(items)]
     headers = {"HX-Redirect": "/"}
-    return table.render({"items": items}), 200, headers
+    return table.render({"items": item_html}), 200, headers
 
 
 @app.route("/new_note", methods=["POST"])
 def add_note():
     note = Note(id=uuid.uuid4(), note=request.form.get("note", ""))
+    if not note.note:
+        return ""
     db = get_db()
     try:
         db.execute(
@@ -117,7 +120,7 @@ def get_note(id: str) -> str:
 
 def crossover(text: str, status: int) -> str:
     if status == 1:
-        templ = Template("<s>{{note}}</s>")
+        templ = Template("<del>{{note}}</del>")
     else:
         templ = Template("{{note}}")
     return templ.render({"note": text})
@@ -147,11 +150,25 @@ def get_all() -> list[Note]:
 
 
 @app.route("/note", methods=["DELETE"])
-def delete_note():
+def delete_note_req():
     id = request.form.get("id")
     if not id:
         return "", 404
+    delete_note(id)
+    return "", 200
+
+def delete_note(id: str):
     db = get_db()
     db.execute("DELETE FROM notes WHERE id=(?)", (id,))
     db.commit()
-    return "", 200
+
+
+@app.route("/clear", methods=["GET"])
+def delete_checked():
+    items = get_all()
+    for item in items:
+        if item.status != 1:
+            continue
+        delete_note(str(item.id))
+    return redirect ("/", 302)
+
